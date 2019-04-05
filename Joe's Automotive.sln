@@ -1,25 +1,155 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Joe's Automotive", "Joe's Automotive\Joe's Automotive.csproj", "{76F4A051-4B17-4562-B423-164F7F86B990}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{76F4A051-4B17-4562-B423-164F7F86B990}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76F4A051-4B17-4562-B423-164F7F86B990}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76F4A051-4B17-4562-B423-164F7F86B990}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76F4A051-4B17-4562-B423-164F7F86B990}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {770B523D-C0CD-4747-9994-9D1F53EA4B3C}
-	EndGlobalSection
-EndGlobal
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Joe_s_Automotive
+{
+    public partial class Form1 : Form
+    {
+        //Constant field for variables.
+        private const decimal tax = 0.09m;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        //The TotalFees method sums up all parts and labor.
+        private decimal TotalFees(decimal laborCost, decimal partsCost)
+        {
+            return (laborCost + partsCost) * tax + (laborCost + partsCost);
+        }
+
+        private void taxLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void calculateTotalButton_Click(object sender, EventArgs e)
+        {
+            //Variables to hold total, labor, parts.
+            decimal total, labor, parts, laborCost, partsCost,
+                oil, lube, radiator, transmission, inspection,
+                muffler, tire, taxTotal;
+
+            //Get the labor hours input.
+            if (decimal.TryParse(laborHoursTextBox.Text, out labor))
+            {
+                //Calculate labor cost.
+                laborCost = labor * 20;
+
+                //Display labor cost.
+                laborLabel.Text = laborCost.ToString("c");
+                servicesLaborLabel.Text = laborCost.ToString("c");
+
+                //Set up conditions for parts with the checkboxes.
+                if(oilChangeCheckBox.Checked == true)
+                {
+                    oil = 26;
+                }
+                else
+                {
+                    oil = 0;
+                }
+                if(lubeJobCheckBox.Checked == true)
+                {
+                    lube = 18;
+                }
+                else
+                {
+                    lube = 0;
+                }
+                if(radiatorFlushCheckBox.Checked == true)
+                {
+                    radiator = 30;
+                }
+                else
+                {
+                    radiator = 0;
+                }
+                if(transmissionFlushCheckBox.Checked == true)
+                {
+                    transmission = 80;
+                }
+                else
+                {
+                    transmission = 0;
+                }
+                if(inspectionCheckBox.Checked == true)
+                {
+                    inspection = 15;
+                }
+                else
+                {
+                    inspection = 0;
+                }
+                if(replaceMufflerCheckBox.Checked == true)
+                {
+                    muffler = 100;
+                }
+                else
+                {
+                    muffler = 0;
+                }
+                if(tireRotationCheckBox.Checked == true)
+                {
+                    tire = 20;
+                }
+                else
+                {
+                    tire = 0;
+                }
+
+                //Calculate total parts.
+                parts = oil + lube + radiator + transmission + inspection +
+                    muffler + tire;
+                partsCost = oil + lube + radiator + transmission + inspection +
+                    muffler + tire;
+
+                //Display total parts.
+                partsLabel.Text = parts.ToString("c");
+                partsTotalLabel.Text = partsCost.ToString("c");
+
+                //Calculate and display tax.
+                taxTotal = (partsCost) * tax;
+                taxLabel.Text = taxTotal.ToString("c");
+
+                //Calculate and display total.
+                total = TotalFees(laborCost, partsCost);
+                totalFeesLabel.Text = total.ToString("c");
+             
+            }
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            oilChangeCheckBox.Checked = false;
+            lubeJobCheckBox.Checked = false;
+            radiatorFlushCheckBox.Checked = false;
+            transmissionFlushCheckBox.Checked = false;
+            inspectionCheckBox.Checked = false;
+            replaceMufflerCheckBox.Checked = false;
+            tireRotationCheckBox.Checked = false;
+            laborHoursTextBox.Text = "";
+            partsLabel.Text = "";
+            laborLabel.Text = "";
+            servicesLaborLabel.Text = "";
+            partsTotalLabel.Text = "";
+            taxLabel.Text = "";
+            totalFeesLabel.Text = "";
+
+            //Reset the focus.
+            this.laborHoursTextBox.Focus();
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+    }
+}

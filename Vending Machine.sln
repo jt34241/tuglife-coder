@@ -1,25 +1,217 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vending Machine", "Vending Machine\Vending Machine.csproj", "{4344CDDC-4E56-4586-A3D9-83CB7FDEF3BE}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4344CDDC-4E56-4586-A3D9-83CB7FDEF3BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4344CDDC-4E56-4586-A3D9-83CB7FDEF3BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4344CDDC-4E56-4586-A3D9-83CB7FDEF3BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4344CDDC-4E56-4586-A3D9-83CB7FDEF3BE}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E767FF10-F6B6-43F1-9660-8B6113E57C42}
-	EndGlobalSection
-EndGlobal
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+
+namespace Vending_Machine
+{
+    struct VendingMachine
+    {
+        public string name;
+        public string cost;
+        public string number_drinks;
+    }
+    public partial class Form1 : Form
+    {
+
+        //Running totals
+        int cola = 20;
+        int lemon = 20;
+        int root = 20;
+        int cream = 20;
+        int grape = 20;
+        decimal total;
+        decimal sale_cola;
+        decimal sale_grape;
+        decimal sale_root;
+        decimal sale_cream;
+        decimal sale_lemon;
+
+
+        //Create a list.
+        private List<VendingMachine> vendingMachine =
+            new List<VendingMachine>();
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        //The ReadFile method reads the contents of the
+        //VendingMachine.txt file and stores it as VendingMachine
+        //objects in the vendingMachine.
+        private void ReadFile()
+        {
+            try
+            {
+                StreamReader inputFile;     //To read the file
+                string line;                //To hold a line from the file
+
+                //Create an instance of the VendingMachine structure.
+                VendingMachine entry = new VendingMachine();
+
+                //Create a delimiter array.
+                char[] delim = { ',' };
+
+                //Open the VendingMachine file.
+                inputFile = File.OpenText("VendingMachine.txt");
+
+                //Read the lines from the file.
+                while(!inputFile.EndOfStream)
+                {
+                    //Read a line from the file.
+                    line = inputFile.ReadLine();
+
+                    //Tokenize the line.
+                    string[] tokens = line.Split(delim);
+
+                    //Store the tokens in the entry object.
+                    entry.name = tokens[0];
+                    entry.cost = tokens[1];
+                    entry.number_drinks = tokens[2];
+
+                    //Add the entry object to the List.
+                    vendingMachine.Add(entry);
+                }
+            }
+            catch (Exception ex)
+            {
+                //Display an error message.
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        //The DisplayNames method displays the list of names
+        //in the namesListBox control.
+        private void DisplayNames()
+        {
+            foreach (VendingMachine entry in vendingMachine)
+            {
+                listBox1.Items.Add(entry.name);
+                listBox1.Items.Add(entry.cost);
+                listBox1.Items.Add(entry.number_drinks);
+            }
+        }
+
+
+        //Set up click events for each box.
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            //Cola soda.
+            cola -= 1;
+            if (cola >= 0)
+            {
+                sale_cola = 1 * (20 - cola);
+                colaLabel.Text = cola.ToString("d");
+                total = sale_cola + sale_cream + sale_grape + sale_lemon + sale_root;
+                totalSalesLabel.Text = total.ToString("c");
+            }
+        }
+        
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            //Lemon lime soda
+            lemon -= 1;
+            if (lemon >= 0)
+            {
+                sale_lemon = 1 * (20 - lemon);
+                lemonLimeLabel.Text = lemon.ToString("d");
+                total = sale_cola + sale_cream + sale_grape + sale_lemon + sale_root;
+                totalSalesLabel.Text = total.ToString("c");
+            }
+        }
+        
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            //Cream soda
+            cream -= 1;
+            if (cream >= 0)
+            {
+                sale_cream = (decimal)1.5 * (20 - cream);
+                creamSodaLabel.Text = cream.ToString("d");
+                total = sale_cola + sale_cream + sale_grape + sale_lemon + sale_root;
+                totalSalesLabel.Text = total.ToString("c");
+            }
+
+
+        }
+        
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            //Root beer soda
+            root -= 1;
+            if (root >= 0)
+            {
+                sale_root = 1 * (20 - root);
+                rootBeerLabel.Text = root.ToString("d");
+                total = sale_cola + sale_cream + sale_grape + sale_lemon + sale_root;
+                totalSalesLabel.Text = total.ToString("c");
+            }
+        }
+        
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            //Grape soda
+            grape -= 1;
+            if (grape >= 0)
+            {
+                sale_grape = (decimal)1.5 * (20 - grape);
+                grapeSodaLabel.Text = grape.ToString("d");
+                total = sale_cola + sale_cream + sale_grape + sale_lemon + sale_root;
+                totalSalesLabel.Text = total.ToString("c");
+            }
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //Read the VendingMachine.txt file.
+            ReadFile();
+
+            //Display the names.
+            DisplayNames();
+
+            //Initialize at 20 for each soda
+            colaLabel.Text = cola.ToString("d");
+            grapeSodaLabel.Text = grape.ToString("d");
+            rootBeerLabel.Text = root.ToString("d");
+            lemonLimeLabel.Text = lemon.ToString("d");
+            creamSodaLabel.Text = cream.ToString("d");
+
+
+
+            //Total sales
+            sale_cola = 1 * (20 - cola);
+            sale_lemon = 1 * (20 - lemon);
+            sale_cream = 1 * (20 - cream);
+            sale_root = 1 * (20 - root);
+            sale_grape = 1 * (20 - grape);
+            total = sale_cola + sale_cream + sale_grape + sale_lemon + sale_root;
+            totalSalesLabel.Text = total.ToString("c");
+        }
+
+        private void pictureBox6_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("No no no no!  Soda bad for you!");
+
+            //Consuela steals all the money and the soda.
+            totalSalesLabel.Text = "$0";
+            //Initialize at 0 for each soda
+            colaLabel.Text = "0";
+            grapeSodaLabel.Text = "0";
+            rootBeerLabel.Text = "0";
+            lemonLimeLabel.Text = "0";
+            creamSodaLabel.Text = "0";
+
+            //close the form.
+            //this.Close();
+        }
+    }
+}

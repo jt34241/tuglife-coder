@@ -1,25 +1,144 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dorm and Meal Plan Calculator", "Dorm and Meal Plan Calculator\Dorm and Meal Plan Calculator.csproj", "{676367B4-07D8-42E1-976E-E7D7B01998E6}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{676367B4-07D8-42E1-976E-E7D7B01998E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{676367B4-07D8-42E1-976E-E7D7B01998E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{676367B4-07D8-42E1-976E-E7D7B01998E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{676367B4-07D8-42E1-976E-E7D7B01998E6}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {92BA5F2D-231A-4E75-9197-633C8ACC8CAF}
-	EndGlobalSection
-EndGlobal
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Dorm_and_Meal_Plan_Calculator
+{
+    public partial class DormMealPlanCosts : Form
+    {
+        public DormMealPlanCosts()
+        {
+            InitializeComponent();
+        }
+
+        private void calculateButton_Click(object sender, EventArgs e)
+        {
+            //Set up variables.
+            string dorm;        //To hold the name of the dorm
+            string mealPlan;    //To hold the name of the plan
+            decimal total = 0.0m;       //To hold total charge
+            decimal rent;        //To hold dorm cost
+            decimal food;        //To hold food cost
+
+            //Set up switch and cases.
+            if (dormListBox.SelectedIndex != -1)
+            {
+                if (mealPlanListBox.SelectedIndex != -1)
+                {
+                    //Get the selected item.
+                    dorm = dormListBox.SelectedItem.ToString();
+                    mealPlan = mealPlanListBox.SelectedItem.ToString();
+
+                    //Determine each case in switch/case. 12 total
+                    switch(dorm)
+                    {
+                        case "Allen Hall":
+                            if(mealPlan == "7 meals per week")
+                            {
+                                rent = 1500m;
+                                food = 600m;
+                                total = rent + food;
+                            }
+                            if(mealPlan == "14 meals per week")
+                            {
+                                rent = 1500m;
+                                food = 1200m;
+                                total = rent + food;
+                            }
+                            if(mealPlan == "Unlimited meals")
+                            {
+                                rent = 1500m;
+                                food = 1700m;
+                                total = rent + food;
+                            }
+                            break;
+
+                        case "Pike Hall":
+                            if (mealPlan == "7 meals per week")
+                            {
+                                rent = 1600m;
+                                food = 600m;
+                                total = rent + food;
+                            }
+                            if (mealPlan == "14 meals per week")
+                            {
+                                rent = 1600m;
+                                food = 1200m;
+                                total = rent + food;
+                            }
+                            if (mealPlan == "Unlimited meals")
+                            {
+                                rent = 1600m;
+                                food = 1700m;
+                                total = rent + food;
+                            }
+                            break;
+
+                        case "Farthing Hall":
+                            if (mealPlan == "7 meals per week")
+                            {
+                                rent = 1800m;
+                                food = 600m;
+                                total = rent + food;
+                            }
+                            if (mealPlan == "14 meals per week")
+                            {
+                                rent = 1800m;
+                                food = 1200m;
+                                total = rent + food;
+                            }
+                            if (mealPlan == "Unlimited meals")
+                            {
+                                rent = 1800m;
+                                food = 1700m;
+                                total = rent + food;
+                            }
+                            break;
+
+                        case "University Suites":
+                            if (mealPlan == "7 meals per week")
+                            {
+                                rent = 2500m;
+                                food = 600m;
+                                total = rent + food;
+                            }
+                            if (mealPlan == "14 meals per week")
+                            {
+                                rent = 2500m;
+                                food = 1200m;
+                                total = rent + food;
+                            }
+                            if (mealPlan == "Unlimited meals")
+                            {
+                                rent = 2500m;
+                                food = 1700m;
+                                total = rent + food;
+                            }
+                            break;
+
+
+                    }
+                }
+            }
+
+            //Create an instance of the DisplayForm class.
+            DisplayForm totalChargeForm = new DisplayForm(total);
+
+            //Display and open the form.
+            totalChargeForm.ShowDialog();
+
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            //Close the form.
+            this.Close();
+        }
+    }
+}
